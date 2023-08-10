@@ -1,0 +1,14 @@
+
+.display-form-cat {
+    display : flex;
+    width: 50%;
+}
+
+.hidden-form-cat{
+    display: none;
+}
+
+.btn-cat-edit-container {
+    display :flex;
+    justify-content: center;
+}

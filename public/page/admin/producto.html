@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="../../css/producto.css" type="text/css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"
+        defer></script>
+    <script src="../../js/models/Categoria.js"></script>
+    <script src="../../js/models/Producto.js"></script>
+    <script src="../../js/repository/fetch.js"></script>
+    <script src="../../js/utils/formsValidate.js"></script>
+    <script src="../../js/utils/spinner.js"></script>
+    <script src="../../js/utils/constantes.js"></script>
+    <script src="../../js/controller/categoriasController.js"></script>
+    <script src="../../js/controller/productoController.js"></script>
+
+
+    <title>Admin</title>
+</head>
+
+<body onload="loadProducts()">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand text-success" href="#">Dulces y manjares glamour</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Menu
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li><a class="dropdown-item" href="./categoria.html">Categorias</a></li>
+                            <li><a class="dropdown-item" href="#">Productos</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <button class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Ordenes
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu">
+                            <li><a class="dropdown-item" href="./categoria.html">Crear Orden</a></li>
+                            <li><a class="dropdown-item" href="#">Ver Ordenes</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <button type="button" class="btn btn-primary mt-2 mb-2 align-center" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            Nuevo
+        </button>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Producto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="product">Producto</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="product" placeholder="Ingrese producto" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="desc">Descripcion</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="desc" placeholder="Ingrese descripcion" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="price">Precio</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="number" min="0" class="form-control" id="price" value="1000" />
+                            </div>
+                        </div>
+
+                        <div class="row mt-2" id="select-container">
+
+                            <div class="col-sm-6">
+                                <label class="form-label" for="cat">Categoria</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <select id="cat-select">
+
+                                </select>
+                            </div>
+                        </div>
+                        <p id="cat-msg" class="text-danger oculto">
+                            No existen categorias disponibles, Crea uno antes
+                        </p>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="imagen">Imagen</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="file" class="form-control" id="imagen" />
+                            </div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Guardar</button>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-sm">
+        <table class="table table-striped table-hover" id="table">
+        </table>
+    </div>
+
+</body>
+
+</html>
