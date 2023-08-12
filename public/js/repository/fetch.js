@@ -106,37 +106,40 @@ const getHttp = async (url, token, id) => {
 }
 
 
-const postImg = async (selector, url, object, token) => {
-    // Supongamos que estos son los datos del producto
-    const producto = {
-        nombre: 'Nombre del producto',
-        descripcion: 'Descripción del producto',
-        precio: 1000,
-        categoria: 'ID de la categoría',
-    };
-
-    const imagenInput = document.querySelector(selector);
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-        producto.imagenBase64 = event.target.result; // Convertir la imagen a base64 y agregarla al objeto
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(producto),
+const postImg = async (url, object, token) => {
+    document.getElementById('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+      
+        const product = document.getElementById('product').value;
+        const desc = document.getElementById('desc').value;
+        const price = parseFloat(document.getElementById('price').value);
+        const catSelect = document.getElementById('cat-select');
+        const selectedCat = catSelect.options[catSelect.selectedIndex].value;
+        const imagenInput = document.getElementById('imagen');
+      
+        
+      
+        
+      
+        const formData = new FormData();
+        formData.append('nombre', product);
+        formData.append('descripcion', desc);
+        formData.append('precio', price);
+        formData.append('categoria', selectedCat);
+        formData.append('imagen', imagenInput.files[0]);
+      
+        fetch('/ruta-de-productos', {
+          method: 'POST',
+          body: formData,
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Producto creado:', data);
-            })
-            .catch(error => {
-                console.error('Error al crear el producto:', error);
-            });
-    };
-
-    reader.readAsDataURL(imagenInput.files[0]); // Leer la imagen como base64
-
+          .then(response => response.json())
+          .then(data => {
+            console.log('Producto creado:', data);
+            // Aquí podrías realizar acciones adicionales si es necesario
+          })
+          .catch(error => {
+            console.error('Error al crear el producto:', error);
+          });
+      });
+      
 }

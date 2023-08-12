@@ -32,6 +32,39 @@ const getCategoriasSelect = async () => {
         selectContainer.className = "oculto";
 
     }
+}
 
 
+const guardarProducto = async () => {
+
+    const nombre = document.getElementById('product').value;
+    const descripcion = document.getElementById('desc').value;
+    const price = parseFloat(document.getElementById('price').value);
+    const catSelect = document.getElementById('cat-select');
+    const selectedCat = catSelect.options[catSelect.selectedIndex].value;
+    const imagenInput = document.getElementById('imagen');
+
+    const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+    const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4); // Obtener la extensión
+
+    if (!allowedExtensions.includes(fileExtension)) {
+        alert('El archivo debe ser una imagen en formato JPG o PNG.');
+        return;
+    }
+
+    // Verificar si se seleccionó un archivo y si es una imagen (jpg o png)
+    if (imagenInput.files.length === 0) {
+        alert('Debes seleccionar una imagen.');
+        return;
+    } else if(imagenInput.files.length > 1){
+        alert("Solo debes seleccionar una imagen");
+        return;
+    } else {
+        const producto = new ProductoCreate(
+            nombre, descripcion, price, selectedCat, imagenInput
+        )
+
+        const peticion = await postImg('', producto, '');
+    }
+    
 }
