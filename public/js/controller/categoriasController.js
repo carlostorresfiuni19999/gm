@@ -145,8 +145,6 @@ const cargarCategorias = async () => {
             tabla.innerHTML = buff.join("\n");
         }
     }
-
-   
 }
 
 

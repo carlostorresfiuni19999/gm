@@ -9,7 +9,7 @@ const app = express();
 
 //Variables de configuracion
 const PORT = 3000;
-const DBURI = `mongodb+srv://${'carlostorres'}:${'carlostorres1999'}@gm.66i1zvh.mongodb.net/?retryWrites=true&w=majority`;
+const DBURI = `mongodb://localhost:27017`;
 
 
 //Middleware

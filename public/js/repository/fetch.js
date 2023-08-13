@@ -107,39 +107,20 @@ const getHttp = async (url, token, id) => {
 
 
 const postImg = async (url, object, token) => {
-    document.getElementById('form').addEventListener('submit', function(event) {
-        event.preventDefault();
-      
-        const product = document.getElementById('product').value;
-        const desc = document.getElementById('desc').value;
-        const price = parseFloat(document.getElementById('price').value);
-        const catSelect = document.getElementById('cat-select');
-        const selectedCat = catSelect.options[catSelect.selectedIndex].value;
-        const imagenInput = document.getElementById('imagen');
-      
-        
-      
-        
-      
-        const formData = new FormData();
-        formData.append('nombre', product);
-        formData.append('descripcion', desc);
-        formData.append('precio', price);
-        formData.append('categoria', selectedCat);
-        formData.append('imagen', imagenInput.files[0]);
-      
-        fetch('/ruta-de-productos', {
-          method: 'POST',
-          body: formData,
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Producto creado:', data);
-            // Aquí podrías realizar acciones adicionales si es necesario
-          })
-          .catch(error => {
-            console.error('Error al crear el producto:', error);
-          });
-      });
-      
+
+    const formData = new FormData();
+    formData.append('nombre', object.nombre);
+    formData.append('descripcion', object.descripcion);
+    formData.append('precio', object.precio);
+    formData.append('categoria', object.categoria);
+    formData.append('imagen', object.imagen.files[0]);
+
+
+    const request = {
+        method: 'POST',
+        body: formData
+    };
+
+    const response = await fetch(url, request);
+    return response.status;
 }
