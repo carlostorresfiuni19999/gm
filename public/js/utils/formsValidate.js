@@ -1,17 +1,19 @@
 const validateForm = (selector, cb) => {
     const form = document.querySelector(selector)
 
-    // Loop over them and prevent submission
 
     form.addEventListener('submit', event => {
-        event.preventDefault();
-        
-        if (!form.checkValidity()) {
-            event.stopPropagation();
-            form.classList.add('was-validated');
-        } else {
-            cb();
-        }       
-
+        validateFormCallBack(form, event, cb)
     })
 };
+
+const validateFormCallBack = (form, event, cb) => {
+    event.preventDefault();
+
+    if (!form.checkValidity()) {
+        event.stopPropagation();
+        form.classList.add('was-validated');
+    } else {
+        cb();
+    }
+}
