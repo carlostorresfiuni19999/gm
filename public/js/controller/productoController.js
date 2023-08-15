@@ -116,6 +116,7 @@ const getProductosTable = async () => {
             buff.push('<th scope = "col">#</th>');
             buff.push('<th scope = "col">Nombre</th>');
             buff.push('<th scope = "col">Descripcion</th>');
+            buff.push('<th scope = "col">Categoria</th>');
             buff.push('<th scope = "col">Precio </th>');
             buff.push('</tr>');
             buff.push('</thead>')
@@ -127,6 +128,7 @@ const getProductosTable = async () => {
                      <th scope = "row"> ${i} </td>
                      <td> ${val.nombre} </td>
                      <td> ${val.descripcion} </td>
+                     <td> ${val.categoria == null ? 'Sin asignar' : val.categoria.nombre} </td>
                      <td> ${val.precio} </td>
                      <td>
                         <button class = "btn btn-outline-info"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">

@@ -7,7 +7,7 @@ const productoSchema = new Schema({
     categoria: {
       type: Schema.Types.ObjectId,
       ref: 'Categoria',
-      required: true,
+      cascade: 'delete'
     },
     nombre: {
       type: String,
