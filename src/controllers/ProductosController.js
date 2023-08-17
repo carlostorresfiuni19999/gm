@@ -21,7 +21,8 @@ const obtenerProductos = async (req, res) => {
 // Obtener un producto por su ID
 const obtenerProductoPorId = async (req, res) => {
   try {
-    const producto = await Producto.findById(req.params.id);
+    const producto = await Producto.findById(req.params.id)
+      .populate('categoria');
     if (!producto) {
       return res.status(404).json({ message: 'Producto no encontrado.' });
     }

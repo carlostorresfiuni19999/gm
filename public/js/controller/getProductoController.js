@@ -9,32 +9,29 @@ const mostrarProductoId = async (id) => {
     console.log(peticion);
 
     if( peticion.status == 200){
-
-        const buff = [];
-        const imagen = peticion.data.imagen;
         const imgElement = document.querySelector('#img-prod');
-
+        const nombre = document.querySelector("#producto-nombre");
+        const descripcion = document.querySelector("#producto-descripcion");
+        const precio = document.querySelector("#producto-precio");
+        const categoria = document.querySelector("#producto-categoria");
+        const bcNombre = document.querySelector("#bc-nombre");
+        const imagen = peticion.data.imagen;
+        
         // Convertir los datos de la imagen a un blob
         const byteArray = new Uint8Array(imagen.data.data);
         const blob = new Blob([byteArray], { type: imagen.contentType });
     
         // Crear una URL para el blob y asignarla a la etiqueta <img>
         const blobUrl = URL.createObjectURL(blob);
+
         imgElement.src = blobUrl;
+        nombre.innerHTML = peticion.data.nombre;
+        descripcion.innerHTML = peticion.data.descripcion;
+        precio.innerHTML = peticion.data.precio;
+        categoria.innerHTML = peticion.data.categoria == null ? "Sin asignar" : peticion.data.categoria.nombre;
+        bcNombre.innerHTML = peticion.data.nombre;
 
-        buff.push('<div id="producto-por-id" class="col-sm-6">');
-        buff.push(`<h2 class= "display-2 text-center"> ${peticion.data.nombre} </h2>`);
-        buff.push(`<h3 class="display-3">Descripcion</h3>`);
-        buff.push(`<h4 class="display-4">${peticion.data.descripcion} </h4>`);
-        buff.push(`<h3 class="display-3">Precio</h3>`);
-        buff.push(`<h4 class="display-4">${peticion.data.precio} </h4>`);
-        buff.push(`<h3 class="display-3">Categoria</h3>`);
-        buff.push(`<h4 class="display-4">
-            ${peticion.data.categoria == null ? "sin asignar" : peticion.data.categoria.nombre}
-         </h4>`);
-        buff.push('</div>')
-
-         document.querySelector('#producto-por-id').innerHTML = buff.join()
+        
         
     }
 }

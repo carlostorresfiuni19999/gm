@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +22,7 @@
     <script src="../../js/controller/getProductoController.js"></script>
     <title>Admin</title>
 </head>
+
 <body onload="loadProductoId()">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -56,15 +58,41 @@
         </div>
     </nav>
 
-    <div id = "container-product-id">
-        <div class="row">
-            <div class="col-sm-6">
-                <img id = "img-prod" />
-            </div>
-            <div id="producto-por-id" class="col-sm-6">
+    <div class="container container-fluid mt-1 mb-1">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="./producto.html">Productos</a></li>
+                <li id="bc-nombre" class="breadcrumb-item active" aria-current="page"></li>
+            </ol>
+        </nav>
+    </div>
+   
 
+    <div class="container container-fluid">
+        <div class="card mt-2">
+            <div id="producto-nombre" class="card-header text-center">
+                Datos
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 d-flex justify-content-center">
+                        <img id="img-prod" />
+                    </div>
+                    <div class="col-sm-6 d-flex justify-content-center mt-1">
+                        <div>
+                            <h5 class="card-title">Descripcion</h5>
+                            <p id="producto-descripcion" class="card-text">My description</p>
+                            <h5 class="card-title">Precio</h5>
+                            <p id="producto-precio" class="card-text">Price</p>
+                            <h5 class="card-title">Categoria</h5>
+                            <p id="producto-categoria" class="card-text"> Sin Asignar </p>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>
