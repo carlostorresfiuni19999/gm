@@ -159,6 +159,97 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalEditarProd" tabindex="-1" aria-labelledby="modalLabelProd" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabelProd">Producto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formProdEditar" novalidate>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="productEdit">Producto</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="productEdit" placeholder="Ingrese producto" />
+                                <div class="invalid-feedback">
+                                    <p class="text-danger">
+                                        Requerido
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="desc">Descripcion</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="descEdit" placeholder="Ingrese descripcion" />
+                                <div class="invalid-feedback">
+                                    <p class="text-danger">
+                                        Requerido
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="price">Precio</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="number" min="0" class="form-control" id="priceEdit" value="1000" />
+                                <div class="invalid-feedback">
+                                    <p class="text-danger">
+                                        Requerido
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2" id="select-container">
+
+                            <div class="col-sm-6">
+                                <label class="form-label" for="cat">Categoria</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <select id="cat-select-edit">
+
+                                </select>
+                            </div>
+                        </div>
+                        <p id="cat-msg-edit" class="text-danger oculto">
+                            No existen categorias disponibles, Crea uno antes
+                        </p>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="imagen">Imagen</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="file" name= "imagen" class="form-control" id="imagen" />
+                                <p id="error-img-req-edit" class="oculto">
+                                    Imagen es requerida
+                                </p>
+                                <p id="error-img-len-edit" class="oculto">
+                                    Solo se admite una imagen
+                                </p>
+
+                                <p id="error-img-format-edit" class="oculto">
+                                    Solo se admiten formato jpg, jpeg y png
+                                </p>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" type="submit">Guardar Cambios</button>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
     <div class="container-sm">
         <div id = "spinner-productos" class="mt-2">

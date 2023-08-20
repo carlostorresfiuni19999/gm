@@ -13,6 +13,7 @@ const loadProducts = () => {
 
 const getCategoriasSelect = async () => {
     const select = document.querySelector("#cat-select");
+    const selectEdit = document.querySelector("#cat-select-edit");
     const selectContainer = document.querySelector("#select-container");
     const catMsg = document.querySelector("#cat-msg");
     const buff = [];
@@ -56,8 +57,9 @@ const guardarProducto = async () => {
     const imagenInput = document.querySelector('#imagen');
 
     if (imagenInput.files[0]) {
-        const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-        const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4); // Obtener la extensión
+        const allowedExtensions = ['.jpg', 'jpeg', '.png'];
+        const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4);
+        console.log(fileExtension); // Obtener la extensión
 
         if (!allowedExtensions.includes(fileExtension)) {
             errorImgFormat.className = "text-danger";
@@ -146,10 +148,14 @@ const getProductosTable = async () => {
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                             </svg>
                         </button>
-                        <button class="btn btn-outline-warning" onclick="showFormEdit('${val._id}', '${val.nombre}')"> 
+                        <button class="btn btn-outline-warning" 
+                            onclick = "mostrarModalEditar('${val._id}', '${val.nombre}', '${val.descripcion}', ${val.precio})"
+                            data-bs-toggle="modal" data-bs-target="#modalEditarProd"> 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                            </svg>
+                            </svg> <p id="error-img-req" class="oculto">
+                            Imagen es requerida
+                        </p>
                         </button>
                         <button class="btn btn-outline-danger" onclick="borrarProducto('${val._id}')"> 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -190,3 +196,19 @@ const borrarProducto = async (id) => {
     }
 }
 
+const mostrarModalEditar = (id, producto, descripcion, precio, categoria, img) => {
+    const modal = document.querySelector('#modalEditarProd');
+
+
+    const productoEditar = document.querySelector("#productEdit");
+    const descEdit = document.querySelector("#descEdit");
+    const priceEdit = document.querySelector("#priceEdit");
+
+    productoEditar.value = producto;
+    descEdit.value = descripcion;
+    priceEdit.value = precio;
+
+    const producto = new Producto();
+
+
+}

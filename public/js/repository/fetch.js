@@ -124,3 +124,21 @@ const postImg = async (url, object, token) => {
     const response = await fetch(url, request);
     return response.status;
 }
+
+const putImg = async (url, object, token) => {
+    const formData = new FormData();
+    formData.append('nombre', object.nombre);
+    formData.append('descripcion', object.descripcion);
+    formData.append('precio', object.precio);
+    formData.append('categoria', object.categoria);
+    formData.append('imagen', object.imagen.files[0]);
+
+
+    const request = {
+        method: 'PUT',
+        body: formData
+    };
+
+    const response = await fetch(url, request);
+    return response.status;
+}
