@@ -13,12 +13,9 @@ const loadProducts = () => {
 
 const getCategoriasSelect = async () => {
     const select = document.querySelector("#cat-select");
-    const selectEdit = document.querySelector("#cat-select-edit");
     const selectContainer = document.querySelector("#select-container");
     const catMsg = document.querySelector("#cat-msg");
-    const catMsgEdit = document.querySelector("#cat-msg-edit");
     const buff = [];
-    const buffEdit = [];
 
     const categorias = await getsHttp(`${URL_SERVER}/categorias`, "");
 
@@ -29,25 +26,18 @@ const getCategoriasSelect = async () => {
 
     if (categorias.data.length > 0) {
         catMsg.className = "oculto";
-        catMsgEdit.className = "oculto";
         selectContainer.className = "row mt-2";
         buff.push("<select id = `cat-select`>");
-        buffEdit.push("<select id = 'cat-select-edit'>");
 
         for (let cat of categorias.data) {
             buff.push(`<option value = "${cat._id}"> ${cat.nombre} </option>`);
-            buffEdit.push(`<option value = "${cat._id}"> ${cat.nombre} </option>`);
         }
         buff.push("</select>");
-        buffEdit.push("</select>");
 
         select.innerHTML = buff.join("\n");
-        selectEdit.innerHTML = buffEdit.push("\n");
     } else {
         catMsg.className = "text-danger";
-        catMsgEdit.className = "text-danger";
         selectContainer.className = "oculto";
-        selectEdit.className = "oculto";
 
     }
 }
@@ -158,7 +148,14 @@ const getProductosTable = async () => {
                             </svg>
                         </button>
                         <button class="btn btn-outline-warning" 
-                            onclick = "mostrarModalEditar('${val._id}', '${val.nombre}', '${val.descripcion}', ${val.precio})"
+                            onclick = "mostrarModalEditar(
+                                '${val._id}', 
+                                '${val.nombre}', 
+                                '${val.descripcion}',
+                                 ${val.precio},
+                                 ${val.categoria}
+                                 
+                                 )"
                             data-bs-toggle="modal" data-bs-target="#modalEditarProd"> 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -209,15 +206,59 @@ const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
     const productoEditar = document.querySelector("#productEdit");
     const descEdit = document.querySelector("#descEdit");
     const priceEdit = document.querySelector("#priceEdit");
-    const errorImgReq = document.querySelector("#error-img-req-edit");
-    const errorImgFormat = document.querySelector("#error-img-format-edit");
-    const errorImgLen = document.querySelector("#error-img-len-edit");
-    const selectedCat = catSelect.options[catSelect.selectedIndex].value;
-    const imagenInput = document.querySelector('#imagen-edit');
+
+
+
 
     productoEditar.value = prod;
     descEdit.value = desc;
     priceEdit.value = prec;
+
+    const editarProducto = async () => await editarProductoCallback(id); 
+    
+    validateForm("#formProdEditar", editarProducto);
+
+}
+
+const editarProductoCallback = async (id) => {
+    const errorImgFormat = document.querySelector("#error-img-format-edit");
+    const errorImgLen = document.querySelector("#error-img-len-edit");
+    const select = document.querySelector("#cat-select-edit");
+    const selectedCat = select.options[select.selectedIndex].value;
+    const selectContainer = document.querySelector("#select-container-edit");
+    const catMsg = document.querySelector("#cat-msg-edit");
+    const imagenInput = document.querySelector('#imagen-edit');
+    const buff = [];
+    const categorias = await getsHttp(`${URL_SERVER}/categorias`, "");
+    let catOrdenados = [...categorias.data];
+
+    if (categorias.status != 200) {
+        alert("Ocurrio un error al cargar las categorias, revisa su conexion");
+        return;
+    }
+
+    if (categorias.data.length > 0) {
+        const catFilter = categorias.data.filter(x => x != null && cat._id != x._id);
+
+
+        if (catFilter.length != categorias.data.length)
+            catOrdenados = [cat, ...catFilter];
+
+        catMsg.className = "oculto";
+        selectContainer.className = "row mt-2";
+        buff.push("<select id = `cat-select`>");
+
+        for (let cat of catOrdenados) {
+            buff.push(`<option value = "${cat._id}"> ${cat.nombre} </option>`);
+        }
+        buff.push("</select>");
+
+        select.innerHTML = buff.join("\n");
+    } else {
+        catMsg.className = "text-danger";
+        selectContainer.className = "oculto";
+
+    }
 
 
     if (imagenInput.files[0]) {
@@ -232,14 +273,13 @@ const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
 
         if (imagenInput.files.length > 1) {
             errorImgLen.className = "text-danger";
-            return ;
+            return;
         }
 
     }
 
     errorImgFormat.className = "oculto";
     errorImgLen.className = "oculto";
-    errorImgReq.className = "oculto";
 
     const producto = new ProductoCreate(
         nombre, descripcion, price, selectedCat, imagenInput
