@@ -2,34 +2,9 @@ let contenedor;
 
 const load = () => {
 
-
-    /*
-    if (data.length > 0) {
-        buff.push('<div class="ms-2 me-2 cont mt-3" id ="contenedor-cartas">');
-        for (let d of data) {
-            buff.push(`
-            <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="./img/budin.jpeg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">${d.producto}</h5>
-                    <p class="card-text">${d.descripcion}</p>
-                    <h6 class="card-footer">${d.precio} Gs</h6>
-                </div>
-            </div>
-
-        </div>
-            `)
-        }
-        buff.push('</div>')
-
-        contenedor.innerHTML = buff.join("\n");
-        
-    }
-    */
    obtenerProductosLandingPage();
 
-   setInterval(obtenerProductosLandingPage, 15000)
+   setInterval(obtenerProductosLandingPage, 120000)
 }
 
 const obtenerProductosLandingPage = async () => {
@@ -37,6 +12,7 @@ const obtenerProductosLandingPage = async () => {
 
     if (productos.status == 200) {
         contenedor = document.querySelector("#contenedor-cartas");
+        contenedor.innerHTML = '';
 
         for (let d of productos.data) {
             const imagen = d.imagen;
@@ -69,8 +45,7 @@ const obtenerProductosLandingPage = async () => {
             divCardBody.append(h5CardTextDescripcion, h6CardFooter);
             divCard.append(divCardHeader, imgNode, divCardBody);
             contenedor.append(divCard);
-            
-            
+        
         }
     }
 }
