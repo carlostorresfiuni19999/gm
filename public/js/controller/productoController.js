@@ -52,53 +52,57 @@ const guardarProducto = async () => {
     const descripcion = document.querySelector('#desc').value;
     const price = parseFloat(document.querySelector('#price').value);
     const catSelect = document.querySelector('#cat-select');
-    const selectedCat = catSelect.options[catSelect.selectedIndex].value;
+    const selectedCat = catSelect.options[catSelect.selectedIndex]
     const imagenInput = document.querySelector('#imagen');
 
-    if (imagenInput.files[0]) {
-        const allowedExtensions = ['.jpg', 'jpeg', '.png'];
-        const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4);
-        console.log(fileExtension); // Obtener la extensión
+    if (selectedCat != undefined) {
+        if (imagenInput.files[0]) {
+            const allowedExtensions = ['.jpg', 'jpeg', '.png'];
+            const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4);
+            console.log(fileExtension); // Obtener la extensión
 
-        if (!allowedExtensions.includes(fileExtension)) {
-            errorImgFormat.className = "text-danger";
-            return;
-        }
-
-        if (imagenInput.files.length > 1) {
-            errorImgLen.className = "text-danger";
-        } else {
-
-            errorImgFormat.className = "oculto";
-            errorImgLen.className = "oculto";
-            errorImgReq.className = "oculto";
-
-            const producto = new ProductoCreate(
-                nombre, descripcion, price, selectedCat, imagenInput
-            )
-
-            const peticion = await postImg(`${URL_SERVER}/productos`, producto, '');
-
-            switch (peticion) {
-                case 200:
-                    await getProductosTable();
-                    break;
-
-                case 404:
-                    alert("Categoria no valida");
-                    break;
-
-                default:
-                    alert("Error de conexion");
-                    console.log("Ocurrio un error al guardar la imagen");
-                    break;
+            if (!allowedExtensions.includes(fileExtension)) {
+                errorImgFormat.className = "text-danger";
+                return;
             }
 
-        }
+            if (imagenInput.files.length > 1) {
+                errorImgLen.className = "text-danger";
+            } else {
 
-    } else {
-        errorImgReq.className = "text-danger";
+                errorImgFormat.className = "oculto";
+                errorImgLen.className = "oculto";
+                errorImgReq.className = "oculto";
+
+                const producto = new ProductoCreate(
+                    nombre, descripcion, price, selectedCat.value, imagenInput
+                )
+
+                const peticion = await postImg(`${URL_SERVER}/productos`, producto, '');
+
+                switch (peticion) {
+                    case 200:
+                        await getProductosTable();
+                        break;
+
+                    case 404:
+                        alert("Categoria no valida");
+                        break;
+
+                    default:
+                        alert("Error de conexion");
+                        console.log("Ocurrio un error al guardar la imagen");
+                        break;
+                }
+
+            }
+
+        } else {
+            errorImgReq.className = "text-danger";
+        }
     }
+
+
 }
 
 
@@ -109,6 +113,11 @@ const verProducto = (id) => {
 }
 
 const getProductosTable = async () => {
+
+    const img = document.querySelector("#imagen");
+
+    if (img.value)
+        img.value = null;
     showSpinner(spinnerProductos);
     const buff = [];
     const productos = await getsHttp(`${URL_SERVER}/productos`, "");
@@ -153,8 +162,8 @@ const getProductosTable = async () => {
                                 '${val.nombre}', 
                                 '${val.descripcion}',
                                  ${val.precio},
-                                 ${val.categoria}
-                                 
+                                 '${val.categoria == null ? '_' : val.categoria._id}',
+                                 '${val.categoria == null ? '_' : val.categoria.nombre}'
                                  )"
                             data-bs-toggle="modal" data-bs-target="#modalEditarProd"> 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
@@ -202,20 +211,23 @@ const borrarProducto = async (id) => {
     }
 }
 
-const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
+const mostrarModalEditar = async (id, prod, desc, prec, idCat, cat) => {
     const productoEditar = document.querySelector("#productEdit");
     const descEdit = document.querySelector("#descEdit");
     const priceEdit = document.querySelector("#priceEdit");
+    const imgInput = document.querySelector('#imagen-edit');
 
-
+    if (imgInput.value)
+        imgInput.value = null;
 
 
     productoEditar.value = prod;
     descEdit.value = desc;
     priceEdit.value = prec;
 
-    const editarProducto = async () => await editarProductoCallback(id); 
-    
+    await getCategoriasSelectEdit(idCat, cat);
+    const editarProducto = async () => await editarProductoCallback(id);
+
     validateForm("#formProdEditar", editarProducto);
 
 }
@@ -223,11 +235,65 @@ const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
 const editarProductoCallback = async (id) => {
     const errorImgFormat = document.querySelector("#error-img-format-edit");
     const errorImgLen = document.querySelector("#error-img-len-edit");
+    const imagenInput = document.querySelector('#imagen-edit');
+    const selectedCat = document.querySelector("#cat-select-edit");
+    const nombre = document.querySelector("#productEdit").value;
+    const descripcion = document.querySelector("#descEdit").value;
+    const price = document.querySelector("#priceEdit").value;
+
+
+    if (selectedCat != undefined) {
+        if (imagenInput.files[0]) {
+            const allowedExtensions = ['.jpg', 'jpeg', '.png'];
+            const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4);
+            console.log(fileExtension); // Obtener la extensión
+
+            if (!allowedExtensions.includes(fileExtension)) {
+                errorImgFormat.className = "text-danger";
+                return;
+            }
+
+            if (imagenInput.files.length > 1) {
+                errorImgLen.className = "text-danger";
+                return;
+            }
+
+        }
+
+        errorImgFormat.className = "oculto";
+        errorImgLen.className = "oculto";
+
+        const producto = new ProductoCreate(
+            nombre, descripcion, price, selectedCat.value, imagenInput
+        )
+
+        const peticion = await putImg(`${URL_SERVER}/productos/${id}`, producto, '');
+
+        switch (peticion) {
+            case 200:
+                await getProductosTable();
+                break;
+
+            case 404:
+                alert("Categoria no valida");
+                break;
+
+            default:
+                alert("Error de conexion");
+                console.log("Ocurrio un error al guardar la imagen");
+                break;
+        }
+    }
+
+
+}
+
+const getCategoriasSelectEdit = async (idCat, cat) => {
     const select = document.querySelector("#cat-select-edit");
-    const selectedCat = select.options[select.selectedIndex].value;
     const selectContainer = document.querySelector("#select-container-edit");
     const catMsg = document.querySelector("#cat-msg-edit");
-    const imagenInput = document.querySelector('#imagen-edit');
+
+
     const buff = [];
     const categorias = await getsHttp(`${URL_SERVER}/categorias`, "");
     let catOrdenados = [...categorias.data];
@@ -237,19 +303,25 @@ const editarProductoCallback = async (id) => {
         return;
     }
 
-    if (categorias.data.length > 0) {
-        const catFilter = categorias.data.filter(x => x != null && cat._id != x._id);
+    if (catOrdenados.length > 0) {
+        const catFilter = categorias.data.filter(x => idCat != x._id);
 
 
         if (catFilter.length != categorias.data.length)
-            catOrdenados = [cat, ...catFilter];
+            catOrdenados = [{
+                _id: idCat,
+                nombre: cat
+            }, ...catFilter];
+
+
+        console.log(catOrdenados);
 
         catMsg.className = "oculto";
         selectContainer.className = "row mt-2";
         buff.push("<select id = `cat-select`>");
 
-        for (let cat of catOrdenados) {
-            buff.push(`<option value = "${cat._id}"> ${cat.nombre} </option>`);
+        for (let c of catOrdenados) {
+            buff.push(`<option value = "${c._id}"> ${c.nombre} </option>`);
         }
         buff.push("</select>");
 
@@ -259,48 +331,4 @@ const editarProductoCallback = async (id) => {
         selectContainer.className = "oculto";
 
     }
-
-
-    if (imagenInput.files[0]) {
-        const allowedExtensions = ['.jpg', 'jpeg', '.png'];
-        const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4);
-        console.log(fileExtension); // Obtener la extensión
-
-        if (!allowedExtensions.includes(fileExtension)) {
-            errorImgFormat.className = "text-danger";
-            return;
-        }
-
-        if (imagenInput.files.length > 1) {
-            errorImgLen.className = "text-danger";
-            return;
-        }
-
-    }
-
-    errorImgFormat.className = "oculto";
-    errorImgLen.className = "oculto";
-
-    const producto = new ProductoCreate(
-        nombre, descripcion, price, selectedCat, imagenInput
-    )
-
-    const peticion = await putImg(`${URL_SERVER}/productos/${id}`, producto, '');
-
-    switch (peticion) {
-        case 200:
-            await getProductosTable();
-            break;
-
-        case 404:
-            alert("Categoria no valida");
-            break;
-
-        default:
-            alert("Error de conexion");
-            console.log("Ocurrio un error al guardar la imagen");
-            break;
-    }
-
-
 }
