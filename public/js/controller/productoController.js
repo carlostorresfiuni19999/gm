@@ -206,7 +206,6 @@ const borrarProducto = async (id) => {
 }
 
 const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
-    const modal = document.querySelector('#modalEditarProd');
     const productoEditar = document.querySelector("#productEdit");
     const descEdit = document.querySelector("#descEdit");
     const priceEdit = document.querySelector("#priceEdit");
@@ -233,37 +232,34 @@ const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
 
         if (imagenInput.files.length > 1) {
             errorImgLen.className = "text-danger";
-        } else {
-
-            errorImgFormat.className = "oculto";
-            errorImgLen.className = "oculto";
-            errorImgReq.className = "oculto";
-
-            const producto = new ProductoCreate(
-                nombre, descripcion, price, selectedCat, imagenInput
-            )
-
-            const peticion = await putImg(`${URL_SERVER}/productos/${id}`, producto, '');
-
-            switch (peticion) {
-                case 200:
-                    await getProductosTable();
-                    break;
-
-                case 404:
-                    alert("Categoria no valida");
-                    break;
-
-                default:
-                    alert("Error de conexion");
-                    console.log("Ocurrio un error al guardar la imagen");
-                    break;
-            }
-
+            return ;
         }
 
-    } else {
-        errorImgReq.className = "text-danger";
+    }
+
+    errorImgFormat.className = "oculto";
+    errorImgLen.className = "oculto";
+    errorImgReq.className = "oculto";
+
+    const producto = new ProductoCreate(
+        nombre, descripcion, price, selectedCat, imagenInput
+    )
+
+    const peticion = await putImg(`${URL_SERVER}/productos/${id}`, producto, '');
+
+    switch (peticion) {
+        case 200:
+            await getProductosTable();
+            break;
+
+        case 404:
+            alert("Categoria no valida");
+            break;
+
+        default:
+            alert("Error de conexion");
+            console.log("Ocurrio un error al guardar la imagen");
+            break;
     }
 
 
