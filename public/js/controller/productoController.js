@@ -16,7 +16,9 @@ const getCategoriasSelect = async () => {
     const selectEdit = document.querySelector("#cat-select-edit");
     const selectContainer = document.querySelector("#select-container");
     const catMsg = document.querySelector("#cat-msg");
+    const catMsgEdit = document.querySelector("#cat-msg-edit");
     const buff = [];
+    const buffEdit = [];
 
     const categorias = await getsHttp(`${URL_SERVER}/categorias`, "");
 
@@ -27,18 +29,25 @@ const getCategoriasSelect = async () => {
 
     if (categorias.data.length > 0) {
         catMsg.className = "oculto";
+        catMsgEdit.className = "oculto";
         selectContainer.className = "row mt-2";
         buff.push("<select id = `cat-select`>");
+        buffEdit.push("<select id = 'cat-select-edit'>");
 
         for (let cat of categorias.data) {
             buff.push(`<option value = "${cat._id}"> ${cat.nombre} </option>`);
+            buffEdit.push(`<option value = "${cat._id}"> ${cat.nombre} </option>`);
         }
         buff.push("</select>");
+        buffEdit.push("</select>");
 
         select.innerHTML = buff.join("\n");
+        selectEdit.innerHTML = buffEdit.push("\n");
     } else {
         catMsg.className = "text-danger";
+        catMsgEdit.className = "text-danger";
         selectContainer.className = "oculto";
+        selectEdit.className = "oculto";
 
     }
 }
@@ -196,19 +205,66 @@ const borrarProducto = async (id) => {
     }
 }
 
-const mostrarModalEditar = (id, producto, descripcion, precio, categoria, img) => {
+const mostrarModalEditar = async (id, prod, desc, prec, cat, img) => {
     const modal = document.querySelector('#modalEditarProd');
-
-
     const productoEditar = document.querySelector("#productEdit");
     const descEdit = document.querySelector("#descEdit");
     const priceEdit = document.querySelector("#priceEdit");
+    const errorImgReq = document.querySelector("#error-img-req-edit");
+    const errorImgFormat = document.querySelector("#error-img-format-edit");
+    const errorImgLen = document.querySelector("#error-img-len-edit");
+    const selectedCat = catSelect.options[catSelect.selectedIndex].value;
+    const imagenInput = document.querySelector('#imagen-edit');
 
-    productoEditar.value = producto;
-    descEdit.value = descripcion;
-    priceEdit.value = precio;
+    productoEditar.value = prod;
+    descEdit.value = desc;
+    priceEdit.value = prec;
 
-    const producto = new Producto();
+
+    if (imagenInput.files[0]) {
+        const allowedExtensions = ['.jpg', 'jpeg', '.png'];
+        const fileExtension = imagenInput.files[0].name.toLowerCase().slice(-4);
+        console.log(fileExtension); // Obtener la extensión
+
+        if (!allowedExtensions.includes(fileExtension)) {
+            errorImgFormat.className = "text-danger";
+            return;
+        }
+
+        if (imagenInput.files.length > 1) {
+            errorImgLen.className = "text-danger";
+        } else {
+
+            errorImgFormat.className = "oculto";
+            errorImgLen.className = "oculto";
+            errorImgReq.className = "oculto";
+
+            const producto = new ProductoCreate(
+                nombre, descripcion, price, selectedCat, imagenInput
+            )
+
+            const peticion = await putImg(`${URL_SERVER}/productos/${id}`, producto, '');
+
+            switch (peticion) {
+                case 200:
+                    await getProductosTable();
+                    break;
+
+                case 404:
+                    alert("Categoria no valida");
+                    break;
+
+                default:
+                    alert("Error de conexion");
+                    console.log("Ocurrio un error al guardar la imagen");
+                    break;
+            }
+
+        }
+
+    } else {
+        errorImgReq.className = "text-danger";
+    }
 
 
 }
