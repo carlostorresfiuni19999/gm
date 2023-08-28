@@ -9,7 +9,7 @@ const app = express();
 
 //Variables de configuracion
 const PORT = 3000;
-const DBURI = `mongodb://localhost:27017`;
+const DBURI = `mongodb://127.0.0.1:27017/gm`;
 
 
 //Middleware
@@ -29,7 +29,7 @@ app.use(express.static('public'));
 //Execute
 mongoose.connect(DBURI)
 .then(_ => console.log("Connected to db"))
-.catch(_ => console.log("Error, connection fail"));
+.catch(e => console.log("Error, connection fail", e));
 
 
 
