@@ -1,1 +1,1 @@
-const URL_SERVER = "http://localhost:3000/api";
+const URL_SERVER = "";

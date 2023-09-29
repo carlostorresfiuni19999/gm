@@ -17,7 +17,7 @@ const getCategoriasSelect = async () => {
     const catMsg = document.querySelector("#cat-msg");
     const buff = [];
 
-    const categorias = await getsHttp(`${URL_SERVER}/categorias`, "");
+    const categorias = await getsHttp(`${URL_SERVER}/api/categorias`, "");
 
     if (categorias.status != 200) {
         alert("Ocurrio un error al cargar las categorias, revisa su conexion");
@@ -78,7 +78,7 @@ const guardarProducto = async () => {
                     nombre, descripcion, price, selectedCat.value, imagenInput
                 )
 
-                const peticion = await postImg(`${URL_SERVER}/productos`, producto, '');
+                const peticion = await postImg(`${URL_SERVER}/api/productos`, producto, '');
 
                 switch (peticion) {
                     case 200:
@@ -120,7 +120,7 @@ const getProductosTable = async () => {
         img.value = null;
     showSpinner(spinnerProductos);
     const buff = [];
-    const productos = await getsHttp(`${URL_SERVER}/productos`, "");
+    const productos = await getsHttp(`${URL_SERVER}/api/productos`, "");
     console.log(productos);
     offSpinner(spinnerProductos);
     if (productos.status != 200) {
@@ -267,7 +267,7 @@ const editarProductoCallback = async (id) => {
             nombre, descripcion, price, selectedCat.value, imagenInput
         )
 
-        const peticion = await putImg(`${URL_SERVER}/productos/${id}`, producto, '');
+        const peticion = await putImg(`${URL_SERVER}/api/productos/${id}`, producto, '');
 
         switch (peticion) {
             case 200:
@@ -295,7 +295,7 @@ const getCategoriasSelectEdit = async (idCat, cat) => {
 
 
     const buff = [];
-    const categorias = await getsHttp(`${URL_SERVER}/categorias`, "");
+    const categorias = await getsHttp(`${URL_SERVER}/api/categorias`, "");
     let catOrdenados = [...categorias.data];
 
     if (categorias.status != 200) {

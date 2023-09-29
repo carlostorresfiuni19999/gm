@@ -1,3 +1,7 @@
 .oculto {
     display: none;
 }
+
+#img-banner {
+    filter: brightness(50%);
+}
