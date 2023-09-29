@@ -4,7 +4,7 @@ const loadProductoId = async () => {
 }
 
 const mostrarProductoId = async (id) => {
-    const peticion = await getHttp(`${URL_SERVER}/get`, "", id);
+    const peticion = await getHttp(`${URL_SERVER}/api/get`, "", id);
 
     console.log(peticion);
 

@@ -8,7 +8,7 @@ const load = () => {
 }
 
 const obtenerProductosLandingPage = async () => {
-    const productos = await getsHttp(`${URL_SERVER}/productos`, "");
+    const productos = await getsHttp(`${URL_SERVER}/api/productos`, "");
 
     if (productos.status == 200) {
         contenedor = document.querySelector("#contenedor-cartas");

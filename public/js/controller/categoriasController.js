@@ -11,7 +11,7 @@ const borrar = async (id) => {
     const conf = confirm("Seguro que deseas borrar, esta accion es irreversible");
     if(conf){
         showSpinner(spinnerCategorias);
-        const peticion = await deleteHttp("http://localhost:3000/api/categorias", "", id);
+        const peticion = await deleteHttp(`${URL_SERVER}/api/categorias`, "", id);
         offSpinner(spinnerCategorias);
         
         if(peticion)
@@ -25,7 +25,7 @@ const borrar = async (id) => {
 const guardar = async () => {
     showSpinner(spinnerCategorias);
     categoria = document.querySelector('#categoria').value;
-    const peticion = await postHttp('http://localhost:3000/api/categorias', {
+    const peticion = await postHttp(`${URL_SERVER}/api/categorias`, {
         nombre: categoria
     }, "");
 
@@ -64,7 +64,7 @@ const editar = async ( id ) => {
         };
     
         showSpinner(spinnerCategorias);
-        const peticion = await putHttp('http://localhost:3000/api/categorias', data , "");
+        const peticion = await putHttp(`${URL_SERVER}/api/categorias`, data , "");
         offSpinner(spinnerCategorias);
 
         if(peticion == 200){
@@ -82,7 +82,7 @@ const editar = async ( id ) => {
 const cargarCategorias = async () => {
     showSpinner(spinnerCategorias);
     const buff = [];
-    const categorias =  await getsHttp("http://localhost:3000/api/categorias", "");
+    const categorias =  await getsHttp(`${URL_SERVER}/api/categorias`, "");
     offSpinner(spinnerCategorias);
     if(categorias.status != 200) {
         alert("Ocurrio un error, verifique su conexion de internet.");
