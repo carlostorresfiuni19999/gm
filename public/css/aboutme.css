@@ -1,0 +1,18 @@
+#img-local {
+    width: 400px;
+    height: 300px;
+}
+
+#title-historia {
+    margin-left: 5%;
+}
+
+#img-about {
+    background-image: url('../img/aboutme.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#img-about::before {
+    background-color: rgba(0, 0, 0, 0.6);
+}
