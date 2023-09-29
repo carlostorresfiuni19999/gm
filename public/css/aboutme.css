@@ -8,11 +8,6 @@
 }
 
 #img-about {
-    background-image: url('../img/aboutme.jpeg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    filter: brightness(50%); 
 }
 
-#img-about::before {
-    background-color: rgba(0, 0, 0, 0.6);
-}
