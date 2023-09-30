@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const categoriasRouter = require('./routers/CategoriasRouter');
-const productosRouter = require('./routers/ProductosRouter');
-const ordenesRouter = require('./routers/OrdenesRouter');
+const categoriasRouter = require('./src/routers/CategoriasRouter');
+const productosRouter = require('./src/routers/ProductosRouter');
+const ordenesRouter = require('./src/routers/OrdenesRouter');
 const cors = require('cors')
 
 //Constantes
