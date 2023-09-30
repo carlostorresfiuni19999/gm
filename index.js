@@ -24,10 +24,6 @@ app.use('/api', categoriasRouter);
 app.use('/api', productosRouter);
 app.use('/api', ordenesRouter);
 
-//Static Pages
-//app.use(express.static('public'));
-
-
 
 //Execute
 mongoose.connect(DBURI)
