@@ -13,7 +13,7 @@ const corsPolicy = {
 
 //Variables de configuracion
 const PORT = 3000;
-const DBURI = `mongodb://127.0.0.1:27017/gm`;
+const DBURI = `mongodb+srv://gm:gm123456@gm.hy45blf.mongodb.net/?retryWrites=true&w=majority`;
 
 
 //Middleware
