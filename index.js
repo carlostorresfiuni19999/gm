@@ -25,7 +25,7 @@ app.use('/api', productosRouter);
 app.use('/api', ordenesRouter);
 
 //Static Pages
-app.use(express.static('public'));
+//app.use(express.static('public'));
 
 
 
