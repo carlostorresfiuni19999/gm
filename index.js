@@ -23,7 +23,6 @@ app.use(cors(corsPolicy))
 app.use('/api', categoriasRouter);
 app.use('/api', productosRouter);
 app.use('/api', ordenesRouter);
-app.get('/', (req, res) => res.json({msg: "Hola Mundo"}));
 
 //Static Pages
 app.use(express.static('public'));
