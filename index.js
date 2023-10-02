@@ -11,7 +11,7 @@ const corsPolicy = {
     origin: '*'
 }
 
-app.use(express.static('/','./public'));
+app.use(express.static('./public'));
 //Variables de configuracion
 const PORT = 3000;
 const DBURI = `mongodb+srv://gm:gm123456@gm.hy45blf.mongodb.net/?retryWrites=true&w=majority`;
