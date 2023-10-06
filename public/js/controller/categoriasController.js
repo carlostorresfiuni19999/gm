@@ -2,6 +2,12 @@ let categoria;
 let spinnerCategorias;
 
 const load = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    if(user == null || !user.logged){
+        location.href = './login.html';
+    }
+
     spinnerCategorias = document.querySelector("#spinner-categorias");
     cargarCategorias();
     validateForm("#categoria-form-container", guardar);
@@ -9,14 +15,14 @@ const load = () => {
 
 const borrar = async (id) => {
     const conf = confirm("Seguro que deseas borrar, esta accion es irreversible");
-    if(conf){
+    if (conf) {
         showSpinner(spinnerCategorias);
         const peticion = await deleteHttp(`${URL_SERVER}/api/categorias`, "", id);
         offSpinner(spinnerCategorias);
-        
-        if(peticion)
+
+        if (peticion)
             location.href = location.href;
-        
+
     }
 }
 
@@ -31,64 +37,64 @@ const guardar = async () => {
 
     offSpinner(spinnerCategorias);
 
-    switch(peticion) {
-        case 200 : 
+    switch (peticion) {
+        case 200:
             alert("Guardado con exito");
             await cargarCategorias();
             break;
-        case 400 :
+        case 400:
             alert("Ya existe la categoria que deseas agregar");
             break;
-        default :
+        default:
             alert("Ocurrio un error al agregar la categoria");
             break;
     }
 }
 
-const editar = async ( id ) => {
-    
+const editar = async (id) => {
+
     const error = document.querySelector(`#error-cat-edit-${id}`);
 
     const input = document.querySelector(`#categoria-edit-${id}`);
 
-    if(input.value == null || input.value.trim().length < 1){
+    if (input.value == null || input.value.trim().length < 1) {
         error.className = "text-danger";
     } else {
 
         error.className = "oculto";
         const data = {
-            id : id,
-            data : {
-                nombre : input.value
+            id: id,
+            data: {
+                nombre: input.value
             }
         };
-    
+
         showSpinner(spinnerCategorias);
-        const peticion = await putHttp(`${URL_SERVER}/api/categorias`, data , "");
+        const peticion = await putHttp(`${URL_SERVER}/api/categorias`, data, "");
         offSpinner(spinnerCategorias);
 
-        if(peticion == 200){
+        if (peticion == 200) {
             location.href = location.href;
-        } else if(peticion == 400){
+        } else if (peticion == 400) {
             alert("Esa categoria ya se encuentra disponible");
         } else {
             alert("Ocurrio un error, verifica su conexion");
         }
-    } 
-       
+    }
+
 }
 
 
 const cargarCategorias = async () => {
     showSpinner(spinnerCategorias);
     const buff = [];
-    const categorias =  await getsHttp(`${URL_SERVER}/api/categorias`, "");
+    const categorias = await getsHttp(`${URL_SERVER}/api/categorias`, "");
     offSpinner(spinnerCategorias);
-    if(categorias.status != 200) {
+    if (categorias.status != 200) {
         alert("Ocurrio un error, verifique su conexion de internet.");
-        
+
     } else {
-        if(categorias.data && categorias.data.length > 0) {
+        if (categorias.data && categorias.data.length > 0) {
             buff.push('<table class="table table-striped">');
             buff.push('<thead>')
             buff.push('<tr>')
@@ -99,9 +105,9 @@ const cargarCategorias = async () => {
             buff.push('</thead>')
             buff.push('<tbody>');
             let i = 0;
-            for(let val of categorias.data){
+            for (let val of categorias.data) {
                 buff.push(
-                `<tr>
+                    `<tr>
                      <th scope = "row"> ${i} </td>
                      <td> ${val.nombre} </td>
                      <td>
@@ -160,12 +166,13 @@ const cargarCategorias = async () => {
 
                     </td>
                 </tr>`
-                     
+
                 );
-                i ++;           }
+                i++;
+            }
             buff.push('</tbody>')
             buff.push('</table>');
-            
+
             let tabla = document.querySelector("#categoria-datos");
             tabla.innerHTML = buff.join("\n");
         }

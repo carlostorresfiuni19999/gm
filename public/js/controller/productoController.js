@@ -2,7 +2,11 @@ let spinnerProductos;
 
 
 const loadProducts = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
 
+    if(user == null || !user.logged){
+        location.href = './login.html';
+    }
 
     spinnerProductos = document.querySelector("#spinner-productos");
     getCategoriasSelect();
